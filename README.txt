@@ -6,3 +6,6 @@ password =
 
 Packages:
 pip install r6sapi
+
+
+# Testing git exclude on raspberry pi.
