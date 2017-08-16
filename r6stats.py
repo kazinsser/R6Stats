@@ -1,12 +1,21 @@
 import asyncio
 import r6sapi as api
+import configparser
 
-# Testing2
+# Testing config
+config = configparser.ConfigParser()
+config.read('settings.ini')
+
+username = config.get('uplay-login', 'username')
+password = config.get('uplay-login', 'password')
+
+print(username)
+print(password)
 
 
 @asyncio.coroutine
 def run():
-    auth = api.Auth("username", "password")
+    auth = api.Auth(username, password)
 
     player = yield from auth.get_player("Kazology", api.Platforms.UPLAY)
     operator = yield from player.get_operator("hibana")
@@ -21,4 +30,4 @@ def run():
     yield from auth.session.close()
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(run())
+#loop.run_until_complete(run())
