@@ -1,6 +1,7 @@
 import asyncio
 import r6sapi as api
 import configparser
+from spreadsheet import GoogleSheet
 
 # Testing config
 config = configparser.ConfigParser()
@@ -32,3 +33,9 @@ def run():
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(run())
+
+gSheet = GoogleSheet()
+sheet = gSheet.getSheet();
+stats = sheet.get_all_records()
+
+print(stats)

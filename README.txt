@@ -5,7 +5,9 @@ password =
 
 
 Packages:
-pip install r6sapi
+r6sapi
+gspread
+oauth2client
 
 
 # Testing git exclude on raspberry pi.
