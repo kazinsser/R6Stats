@@ -1,3 +1,5 @@
+#!/usr/bin/python3.4
+
 import asyncio
 import r6sapi as api
 import configparser
@@ -27,8 +29,8 @@ class R6Stats:
         print(date)
         weekday = now.weekday()
 
-        players = ['Atsuraka', 'CarpeVexillumTV', 'jmsst110', 'Kazology', 'Madmaxdog1', 'Mcloov', 'nsibley',
-                   'SpartanBH', 'Spotikus1', 'WM_Feedback']
+        players = ['Atsuraka', 'CarpeVexillumTV', 'jmsst110', 'Kazology', 'Madmaxdog1', 'Mcloov', 'CommanderCreem',
+                   'SpartanBH', 'Spottykus', 'WM_Feedback']
 
         google_sheet = GoogleSheet()
 
@@ -40,7 +42,10 @@ class R6Stats:
             gametype_sheet = google_sheet.get_sheet('gametype_stats')
 
         for name in players:
-            player = yield from auth.get_player(name, api.Platforms.UPLAY)
+            try:
+                player = yield from auth.get_player(name, api.Platforms.UPLAY)
+            except api.r6sapi.InvalidRequest:
+                continue
 
             general_stats = [name, date]
             weapon_stats = [name, date]
