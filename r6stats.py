@@ -25,6 +25,7 @@ class R6Stats:
         now = datetime.datetime.now()
         date = now.strftime("%Y-%m-%d")
         print(date)
+        weekday = now.weekday()
 
         players = ['Atsuraka', 'CarpeVexillumTV', 'jmsst110', 'Kazology', 'Madmaxdog1', 'Mcloov', 'nsibley',
                    'SpartanBH', 'Spotikus1', 'WM_Feedback']
@@ -32,9 +33,11 @@ class R6Stats:
         google_sheet = GoogleSheet()
 
         general_sheet = google_sheet.get_sheet('general_stats')
-        weapon_sheet = google_sheet.get_sheet('weapon_stats')
-        operator_sheet = google_sheet.get_sheet('operator_stats')
-        gametype_sheet = google_sheet.get_sheet('gametype_stats')
+
+        if weekday == 6:
+            weapon_sheet = google_sheet.get_sheet('weapon_stats')
+            operator_sheet = google_sheet.get_sheet('operator_stats')
+            gametype_sheet = google_sheet.get_sheet('gametype_stats')
 
         for name in players:
             player = yield from auth.get_player(name, api.Platforms.UPLAY)
@@ -46,69 +49,70 @@ class R6Stats:
 
             print(name, 'Complete Stats')
 
-            weapons = yield from player.check_weapons()
-            for w in weapons:
-                weapon_stats.append(w.kills)
-                weapon_stats.append(w.headshots)
-                weapon_stats.append(w.hits)
-                weapon_stats.append(w.shots)
+            if weekday == 6:
+                weapons = yield from player.check_weapons()
+                for w in weapons:
+                    weapon_stats.append(w.kills)
+                    weapon_stats.append(w.headshots)
+                    weapon_stats.append(w.hits)
+                    weapon_stats.append(w.shots)
 
-                print(w.name, 'Stats')
-                print('Kills:', w.kills)
-                print('Headshots:', w.headshots)
-                print('Hits:', w.hits)
-                print('Shots:', w.shots)
-                print('')
+                    print(w.name, 'Stats')
+                    print('Kills:', w.kills)
+                    print('Headshots:', w.headshots)
+                    print('Hits:', w.hits)
+                    print('Shots:', w.shots)
+                    print('')
 
-            operators = []
-            attack_operators = ['Ash', 'Blitz', 'Blackbeard', 'Buck', 'Capitao', 'Fuze', 'Glaz', 'Hibana', 'IQ',
-                                'Jackal', 'Montagne', 'Sledge', 'Thatcher', 'Thermite', 'Twitch']
-            defense_operators = ['Bandit', 'Castle', 'Caveira', 'Doc', 'Echo', 'Frost', 'Jager', 'Kapkan', 'Mira',
-                                 'Mute', 'Pulse', 'Rook', 'Smoke', 'Tachanka', 'Valkyrie']
+                operators = []
+                attack_operators = ['Ash', 'Blitz', 'Blackbeard', 'Buck', 'Capitao', 'Fuze', 'Glaz', 'Hibana', 'IQ',
+                                    'Jackal', 'Montagne', 'Sledge', 'Thatcher', 'Thermite', 'Twitch']
+                defense_operators = ['Bandit', 'Castle', 'Caveira', 'Doc', 'Echo', 'Frost', 'Jager', 'Kapkan', 'Mira',
+                                     'Mute', 'Pulse', 'Rook', 'Smoke', 'Tachanka', 'Valkyrie']
 
-            operators.extend(attack_operators)
-            operators.extend(defense_operators)
+                operators.extend(attack_operators)
+                operators.extend(defense_operators)
 
-            for op_name in operators:
-                operator = yield from player.get_operator(op_name)
+                for op_name in operators:
+                    operator = yield from player.get_operator(op_name)
 
-                operator_stats.append(operator.kills)
-                operator_stats.append(operator.deaths)
-                operator_stats.append(operator.wins)
-                operator_stats.append(operator.losses)
-                operator_stats.append(operator.headshots)
-                operator_stats.append(operator.melees)
-                operator_stats.append(operator.dbnos)
-                operator_stats.append(str(round(operator.time_played/3600, 2)))
-                operator_stats.append(str(operator.statistic) + ' ' + operator.statistic_name)
+                    operator_stats.append(operator.kills)
+                    operator_stats.append(operator.deaths)
+                    operator_stats.append(operator.wins)
+                    operator_stats.append(operator.losses)
+                    operator_stats.append(operator.headshots)
+                    operator_stats.append(operator.melees)
+                    operator_stats.append(operator.dbnos)
+                    operator_stats.append(str(round(operator.time_played/3600, 2)))
+                    operator_stats.append(str(operator.statistic) + ' ' + operator.statistic_name)
 
-                print(op_name, 'Stats')
-                print('Kills:', operator.kills)
-                print('Deaths:', operator.deaths)
-                print('Wins:', operator.wins)
-                print('Losses:', operator.losses)
-                print('Headshots:', operator.headshots)
-                print('Melees:', operator.melees)
-                print('DBNOs:', operator.dbnos)
-                print('Time:', round(operator.time_played/3600, 2), 'hours')
-                print('Statistic:', operator.statistic, operator.statistic_name)
-                print('')
+                    print(op_name, 'Stats')
+                    print('Kills:', operator.kills)
+                    print('Deaths:', operator.deaths)
+                    print('Wins:', operator.wins)
+                    print('Losses:', operator.losses)
+                    print('Headshots:', operator.headshots)
+                    print('Melees:', operator.melees)
+                    print('DBNOs:', operator.dbnos)
+                    print('Time:', round(operator.time_played/3600, 2), 'hours')
+                    print('Statistic:', operator.statistic, operator.statistic_name)
+                    print('')
 
-            gametypes = yield from player.check_gamemodes()
-            for g in gametypes:
-                gtype = gametypes[g]
+                gametypes = yield from player.check_gamemodes()
+                for g in gametypes:
+                    gtype = gametypes[g]
 
-                gametype_stats.append(gtype.played)
-                gametype_stats.append(gtype.won)
-                gametype_stats.append(gtype.lost)
-                gametype_stats.append(gtype.best_score)
+                    gametype_stats.append(gtype.played)
+                    gametype_stats.append(gtype.won)
+                    gametype_stats.append(gtype.lost)
+                    gametype_stats.append(gtype.best_score)
 
-                print(gtype.name, 'Stats')
-                print('Played:', gtype.played)
-                print('Wins:', gtype.won)
-                print('Lost:', gtype.lost)
-                print('Best Score:', gtype.best_score)
-                print('')
+                    print(gtype.name, 'Stats')
+                    print('Played:', gtype.played)
+                    print('Wins:', gtype.won)
+                    print('Lost:', gtype.lost)
+                    print('Best Score:', gtype.best_score)
+                    print('')
 
             print('General Stats')
             yield from player.check_level()
@@ -204,9 +208,11 @@ class R6Stats:
             print('')
 
             general_sheet.append_row(general_stats)
-            weapon_sheet.append_row(weapon_stats)
-            operator_sheet.append_row(operator_stats)
-            gametype_sheet.append_row(gametype_stats)
+
+            if weekday == 6:
+                weapon_sheet.append_row(weapon_stats)
+                operator_sheet.append_row(operator_stats)
+                gametype_sheet.append_row(gametype_stats)
 
             time.sleep(10)
 
