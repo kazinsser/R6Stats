@@ -14,7 +14,8 @@ class R6Stats:
 
     def get_credentials(self):
         config = configparser.ConfigParser()
-        config.read('settings.ini')
+        # config.read('settings.ini')
+        config.read('/home/pi/git/R6Stats/settings.ini')
 
         self.username = config.get('uplay-login', 'username')
         self.password = config.get('uplay-login', 'password')
@@ -29,8 +30,9 @@ class R6Stats:
         print(date)
         weekday = now.weekday()
 
-        players = ['Atsuraka', 'CarpeVexillumTV', 'jmsst110', 'Kazology', 'Madmaxdog1', 'Mcloov', 'CommanderCreem',
-                   'SpartanBH', 'Spottykus', 'WM_Feedback']
+        players = ['Atsuraka', 'CarpeVexillumTV', 'Feedback-', 'jmsst110', 'Kazology', 'Maxdoggy_', 'Mcloov', 'NicSib',
+                   'RedGrizzlyGamer', 'SpartanBH', 'Spottykus']
+        # players = ['Kazology']
 
         google_sheet = GoogleSheet()
 
@@ -72,8 +74,12 @@ class R6Stats:
                 operators = []
                 attack_operators = ['Ash', 'Blitz', 'Blackbeard', 'Buck', 'Capitao', 'Fuze', 'Glaz', 'Hibana', 'IQ',
                                     'Jackal', 'Montagne', 'Sledge', 'Thatcher', 'Thermite', 'Twitch']
-                defense_operators = ['Bandit', 'Castle', 'Caveira', 'Doc', 'Echo', 'Frost', 'Jager', 'Kapkan', 'Mira',
-                                     'Mute', 'Pulse', 'Rook', 'Smoke', 'Tachanka', 'Valkyrie']
+                defense_operators = ['Bandit', 'Castle', 'Caveira', 'Doc', 'Echo', 'Frost', 'Jager', 'Kapkan',
+                                     'Mira', 'Mute', 'Pulse', 'Rook', 'Smoke', 'Tachanka', 'Valkyrie']
+                # attack_operators = ['Ash', 'Blitz', 'Blackbeard', 'Buck', 'Capitao', 'Fuze', 'Glaz', 'Hibana', 'IQ',
+                #                     'Jackal', 'Montagne', 'Sledge', 'Thatcher', 'Thermite', 'Twitch', 'Ying']
+                # defense_operators = ['Bandit', 'Castle', 'Caveira', 'Doc', 'Echo', 'Ela', 'Frost', 'Jager', 'Kapkan',
+                #                      'Lesion', 'Mira', 'Mute', 'Pulse', 'Rook', 'Smoke', 'Tachanka', 'Valkyrie']
 
                 operators.extend(attack_operators)
                 operators.extend(defense_operators)
@@ -219,7 +225,7 @@ class R6Stats:
                 operator_sheet.append_row(operator_stats)
                 gametype_sheet.append_row(gametype_stats)
 
-            time.sleep(10)
+            time.sleep(5)
 
         yield from auth.session.close()
 

@@ -7,7 +7,8 @@ class GoogleSheet:
 
     def __init__(self):
         scope = ['https://spreadsheets.google.com/feeds']
-        creds = ServiceAccountCredentials.from_json_keyfile_name('GDrive.json', scope)
+        creds = ServiceAccountCredentials.from_json_keyfile_name('/home/pi/git/R6Stats/GDrive.json', scope)
+        # creds = ServiceAccountCredentials.from_json_keyfile_name('GDrive.json', scope)
         client = gspread.authorize(creds)
         self.__sheet = client.open('R6Stats')
 
